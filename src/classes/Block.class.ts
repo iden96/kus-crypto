@@ -18,7 +18,12 @@ export default class Block {
   }
 
   static hash(timestamp: number, lastHash: string, data: object) {
-    return SHA256(`${timestamp}${lastHash}${data}`).toString();
+    return SHA256(`${timestamp}${lastHash}${JSON.stringify(data)}`).toString();
+  }
+
+  static blockHash(block: Block) {
+    const { timestamp, lastHash, data } = block;
+    return Block.hash(timestamp, lastHash, data);
   }
 
   constructor(timestamp: number, lastHash: string, hash: string, data: object) {

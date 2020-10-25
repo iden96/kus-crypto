@@ -1,12 +1,12 @@
 import Block from '../src/classes/Block.class';
 
 describe('Block', () => {
-  let data: string;
+  let data: object;
   let lastBlock: Block;
   let block: Block;
 
   beforeEach(() => {
-    data = [];
+    data = {};
     lastBlock = Block.genesis();
     block = Block.mineBlock(lastBlock, data);
   });
