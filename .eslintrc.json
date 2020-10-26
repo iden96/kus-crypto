@@ -19,6 +19,7 @@
     "no-plusplus": "off",
     "no-useless-return": "off",
     "lines-between-class-members": "off",
+    "consistent-return": "off",
     "space-infix-ops": "off",
     "jest/no-disabled-tests": "warn",
     "jest/no-focused-tests": "error",
