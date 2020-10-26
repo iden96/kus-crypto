@@ -1,5 +1,5 @@
 import config from 'config';
-import { ec } from 'elliptic';
+import { BNInput, ec } from 'elliptic';
 import ChainUtil from './ChainUtil.class';
 
 const INITIAL_BALANCE = config.get<number>('INITIAL_BALANCE');
@@ -13,6 +13,10 @@ export default class Wallet {
     this.balance = INITIAL_BALANCE;
     this.keyPair = ChainUtil.genKeyPair();
     this.publicKey = this.keyPair.getPublic().encode('hex', false);
+  }
+
+  sign(dataHash: string) {
+    return this.keyPair.sign(dataHash as BNInput);
   }
 
   toString() {

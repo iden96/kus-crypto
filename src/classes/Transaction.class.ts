@@ -1,10 +1,10 @@
 import ChainUtil from './ChainUtil.class';
-import { Output } from './interfaces';
+import { Input, Output } from './interfaces';
 import Wallet from './Wallet.class';
 
 export default class Transaction {
   id: string;
-  input: null;
+  input: Input;
   outputs: Output[];
 
   constructor() {
@@ -13,19 +13,38 @@ export default class Transaction {
     this.outputs = [];
   }
 
-  static newTransaction(senderWaller: Wallet, recipient: string, amount: number) {
+  static newTransaction(senderWallet: Wallet, recipient: string, amount: number) {
     const transaction = new this();
 
-    if (amount > senderWaller.balance) {
+    if (amount > senderWallet.balance) {
       console.log(`Amount: ${amount} exceeds balance.`);
       return;
     }
 
     transaction.outputs.push(...[
-      { amount: senderWaller.balance - amount, address: senderWaller.publicKey },
+      { amount: senderWallet.balance - amount, address: senderWallet.publicKey },
       { amount, address: recipient },
     ]);
 
+    Transaction.signTransaction(transaction, senderWallet);
+
     return transaction;
+  }
+
+  static signTransaction(transaction: Transaction, senderWallet: Wallet) {
+    transaction.input = {
+      timestamp: Date.now(),
+      amount: senderWallet.balance,
+      address: senderWallet.publicKey,
+      signature: senderWallet.sign(ChainUtil.hash(transaction.outputs)),
+    };
+  }
+
+  static verifyTransaction(transaction: Transaction) {
+    return ChainUtil.varifySignature(
+      transaction.input.address,
+      transaction.input.signature as string,
+      ChainUtil.hash(transaction.outputs),
+    );
   }
 }
