@@ -9,14 +9,15 @@ export default class Transaction {
 
   constructor() {
     this.id = ChainUtil.id();
-    this.input = null;
+    this.input = undefined as any;
     this.outputs = [];
   }
 
   update(senderWallet: Wallet, recipient: string, amount: number) {
-    const senderOutput = this.outputs.find((output) => output.address === senderWallet.publicKey);
+    const senderOutput = this.outputs
+      .find((output) => output.address === senderWallet.publicKey) as Output;
 
-    if (amount > senderOutput?.amount) {
+    if (amount > senderOutput.amount) {
       console.log(`Amount: ${amount} exceeds balance.`);
       return;
     }
@@ -58,7 +59,7 @@ export default class Transaction {
   static verifyTransaction(transaction: Transaction) {
     return ChainUtil.varifySignature(
       transaction.input.address,
-      transaction.input.signature as string,
+      transaction.input.signature as unknown as string,
       ChainUtil.hash(transaction.outputs),
     );
   }

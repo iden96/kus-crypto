@@ -33,7 +33,7 @@ export default class Wallet {
       transaction.update(this, recipient, amount);
     } else {
       transaction = Transaction.newTransaction(this, recipient, amount);
-      transactionPool.updateOrAddTransaction(transaction);
+      transactionPool.updateOrAddTransaction(transaction as Transaction);
     }
 
     return transaction;
