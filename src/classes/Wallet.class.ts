@@ -11,6 +11,12 @@ export default class Wallet {
   private keyPair: ec.KeyPair;
   publicKey: string;
 
+  static blockchainWallet() {
+    const blockchainWallet = new this();
+    blockchainWallet.address = 'blockchain-wallet';
+    return blockchainWallet;
+  }
+
   constructor() {
     this.balance = INITIAL_BALANCE;
     this.keyPair = ChainUtil.genKeyPair();

@@ -1,6 +1,9 @@
+import config from 'config';
 import Transaction from '../src/classes/Transaction.class';
 import TransactionPool from '../src/classes/TransactionPool.class';
 import Wallet from '../src/classes/Wallet.class';
+
+const MINING_REWARD = config.get<number>('MINING_REWARD');
 
 describe('Wallet', () => {
   let wallet: Wallet;
@@ -35,6 +38,17 @@ describe('Wallet', () => {
       it('clones the `sendAmount` output for the recipient', () => {
         expect(transaction.outputs.filter((output) => output.address === recipient)
           .map((output) => output.amount)).toEqual([sendAmount, sendAmount]);
+      });
+    });
+
+    describe('creating a reward transaction', () => {
+      beforeEach(() => {
+        transaction = Transaction.rewardTransaction(wallet, Wallet.blockchainWallet());
+      });
+
+      it('reward the miner\'s wallet', () => {
+        expect(transaction.outputs.find((output) => output.address === wallet.publicKey)!.amount)
+          .toEqual(MINING_REWARD);
       });
     });
   });
