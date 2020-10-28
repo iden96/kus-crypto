@@ -21,6 +21,10 @@ app.get('/transactions', (req: Request, res: Response) => {
   res.json(tp.transactions);
 });
 
+app.get('/public-key', (req: Request, res: Response) => {
+  res.json({ publicKey: wallet.publicKey });
+});
+
 app.post('/mine', (req: MineRequest, res: Response) => {
   bc.addBlock(req.body.data);
   p2pServer.syncChains();
