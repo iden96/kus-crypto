@@ -1,3 +1,4 @@
+import BlockChain from '../src/classes/Blockchain.class';
 import Transaction from '../src/classes/Transaction.class';
 import TransactionPool from '../src/classes/TransactionPool.class';
 import Wallet from '../src/classes/Wallet.class';
@@ -6,11 +7,13 @@ describe('TransactionPool', () => {
   let tp: TransactionPool;
   let wallet: Wallet;
   let transaction: Transaction;
+  let bc: BlockChain;
 
   beforeEach(() => {
     tp = new TransactionPool();
     wallet = new Wallet();
-    transaction = wallet.createTransaction('r4nd-4dr33', 30, tp);
+    bc = new BlockChain();
+    transaction = wallet.createTransaction('r4nd-4dr33', 30, bc, tp)!;
   });
 
   it('adds a transaction to the pool', () => {
@@ -37,7 +40,7 @@ describe('TransactionPool', () => {
       validTransactions = [...tp.transactions];
       for (let i = 0; i < 6; i++) {
         wallet = new Wallet();
-        transaction = wallet.createTransaction('r4nd-4dr355', 30, tp);
+        transaction = wallet.createTransaction('r4nd-4dr355', 30, bc, tp)!;
         if (i%2 === 0) {
           transaction.input.amount = 99999;
         } else {

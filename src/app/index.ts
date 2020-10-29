@@ -41,7 +41,7 @@ app.post('/mine', (req: MineRequest, res: Response) => {
 
 app.post('/transact', (req: TransactRequest, res: Response) => {
   const { recipient, amount } = req.body;
-  const transaction = wallet.createTransaction(recipient, amount, tp);
+  const transaction = wallet.createTransaction(recipient, amount, bc, tp);
   p2pServer.broadcastTransaction(transaction);
   res.redirect('/transactions');
 });
